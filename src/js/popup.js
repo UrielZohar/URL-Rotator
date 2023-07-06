@@ -1,4 +1,9 @@
+import {initActions} from './actions.js';
+
 const urlRegex = new RegExp("^(http[s]?:\\/\\/(www\\.)?|www\\.){1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
+
+const STOP_BUTTON = document.getElementById('stop-button');
+const START_BUTTON = document.getElementById('start-button');
 
 const putUrlListItemsInTheListOfElements = () => {
   chrome.storage.local.get(["urlListItems"]).then(res => {
@@ -28,29 +33,9 @@ const getUrlList = () => {
   return urlListItems;
 }
 
-// handle the start button click
-document.getElementById('start-button').addEventListener('click', function() {
-  // send a message to the background script to start the tab switching
-  const urlListItems = getUrlList();
-  if (urlListItems.length === 0) {
-    return;
-  }
-  chrome.runtime.sendMessage({
-    message: "start",
-    payload: {
-      urlListItems,
-    }
-  });
-  // close the popup window
-  window.close();
-});
-
-// handle the stop button click
-document.getElementById('stop-button').addEventListener('click', function() {
-  // send a message to the background script to stop the tab switching
-  chrome.runtime.sendMessage({message: "stop"});
-  // close the popup window
-  window.close();
+initActions({
+  stopButton: STOP_BUTTON,
+  startButton: START_BUTTON,
 });
 
 // on start
