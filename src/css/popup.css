@@ -5,7 +5,7 @@ html {
 
 /* Title */
 h1 {
-  color: red;
+  color: #57a305;
   text-align: center;
   font-size: 37px;
   margin: 0;
@@ -60,7 +60,7 @@ tr .seconds-input {
 
 /* Start button */
 .start-btn {
-  background-color: red;
+  background-color: #57a305;
   color: white;
   border: none;
   padding: 10px 20px;
