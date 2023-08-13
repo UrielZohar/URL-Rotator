@@ -1,7 +1,5 @@
 import {initActions} from './actions.js';
 
-const urlRegex = new RegExp("^(http[s]?:\\/\\/(www\\.)?|www\\.){0,1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
-
 const STOP_BUTTON = document.getElementById('stop-button');
 const START_BUTTON = document.getElementById('start-button');
 

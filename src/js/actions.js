@@ -1,7 +1,6 @@
 import { stopSwitching } from './messages.js';
 
-const urlRegex = new RegExp("^(http[s]?:\\/\\/(www\\.)?)([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
-
+const urlRegex = new RegExp("^(http[s]?:\\/\\/(www\\.)?|www\\.){0,1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
 const closePopupWindow = () => {
   window.close();
 }
@@ -19,12 +18,17 @@ const getUrlList = () => {
   const secondsList = document.querySelectorAll(".seconds-input input");
   for (let index = 0; index < urlList.length; index++) {
     const currentUrl = urlList[index].value;
+    console.log(currentUrl);
     const currentSeconds = parseInt(secondsList[index].value);
+    console.log(currentSeconds);
     if (urlRegex.test(currentUrl) && currentSeconds) {
+      console.log('passed the test');
       urlListItems.push({
         durationTime: currentSeconds,
         url: currentUrl
       });
+    } else {
+      console.log('failed the test');
     }
   }
   return urlListItems;
@@ -36,7 +40,9 @@ const getUrlList = () => {
 const setStartButtonActios = (startButton) => {
   startButton.addEventListener('click', function () {
     // send a message to the background script to start the tab switching
+    console.log("start button clicked");
     const urlListItems = getUrlList();
+    console.log(urlListItems);
     if (urlListItems.length === 0) {
       return;
     }
