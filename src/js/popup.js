@@ -2,6 +2,7 @@ import {initActions} from './actions.js';
 
 const STOP_BUTTON = document.getElementById('stop-button');
 const START_BUTTON = document.getElementById('start-button');
+const SUBJECT_SELECT = document.getElementById('subject-select');
 
 const putUrlListItemsInTheListOfElements = () => {
   chrome.storage.local.get(["urlListItems"]).then(res => {
@@ -18,6 +19,7 @@ const putUrlListItemsInTheListOfElements = () => {
 initActions({
   stopButton: STOP_BUTTON,
   startButton: START_BUTTON,
+  subjectSelect: SUBJECT_SELECT,
 });
 
 // on start

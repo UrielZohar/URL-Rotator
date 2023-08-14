@@ -1,6 +1,8 @@
 import { stopSwitching } from './messages.js';
+import urlSubjectLists from './subjectsList.js';
 
 const urlRegex = new RegExp("^(http[s]?:\\/\\/(www\\.)?|www\\.){0,1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
+
 const closePopupWindow = () => {
   window.close();
 }
@@ -8,7 +10,6 @@ const closePopupWindow = () => {
 const setStopButtonActios = (stopButton) => {
   stopButton.addEventListener('click', () => {
     stopSwitching();
-    closePopupWindow();
   });
 }
 
@@ -40,9 +41,7 @@ const getUrlList = () => {
 const setStartButtonActios = (startButton) => {
   startButton.addEventListener('click', function () {
     // send a message to the background script to start the tab switching
-    console.log("start button clicked");
     const urlListItems = getUrlList();
-    console.log(urlListItems);
     if (urlListItems.length === 0) {
       return;
     }
@@ -57,9 +56,20 @@ const setStartButtonActios = (startButton) => {
   });
 }
 
-const initActions = ({ stopButton, startButton }) => {
+const setSubjectSelectActions = (subjectSelect) => {
+  subjectSelect.addEventListener('change', function () {
+    const subjectUrls = urlSubjectLists[subjectSelect.value];
+    const urlList = document.querySelectorAll(".url-input input");
+    urlList.forEach((urlInput, index) => {
+      urlInput.value = subjectUrls[index];
+    });
+  });
+}
+
+const initActions = ({ stopButton, startButton, subjectSelect }) => {
   setStopButtonActios(stopButton);
   setStartButtonActios(startButton);
+  setSubjectSelectActions(subjectSelect);
 };
 
 export { initActions };

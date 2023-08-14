@@ -5,7 +5,6 @@ const lists = {
     "https://www.cbssports.com",
     "https://www.skysports.com",
     "https://www.bleacherreport.com",
-    "https://www.sportscasting.com"
   ],
   "health": [
     "https://www.webmd.com",
@@ -13,7 +12,6 @@ const lists = {
     "https://www.nih.gov/health-information",
     "https://www.healthline.com",
     "https://www.medicinenet.com",
-    "https://www.cdc.gov"
   ],
   "nature": [
     "https://www.nationalgeographic.com",
@@ -21,7 +19,6 @@ const lists = {
     "https://www.nature.com",
     "https://www.sierraclub.org",
     "https://www.wwf.org",
-    "https://www.nature.org"
   ],
   "finance": [
     "https://www.bloomberg.com",
@@ -29,7 +26,6 @@ const lists = {
     "https://www.wsj.com",
     "https://www.ft.com",
     "https://www.investopedia.com",
-    "https://www.marketwatch.com"
   ],
   "news": [
     "https://www.bbc.co.uk/news",
@@ -37,7 +33,20 @@ const lists = {
     "https://www.nytimes.com",
     "https://www.theguardian.com",
     "https://www.reuters.com",
-    "https://www.aljazeera.com"
+  ],
+  "music": [
+    "https://www.billboard.com/",
+    "https://pitchfork.com/",
+    "https://www.rollingstone.com/",
+    "https://www.nme.com/",
+    "https://www.allmusic.com/"
+  ],
+  "mixed": [
+    "https://www.bbc.com/",
+    "https://www.nytimes.com/",
+    "https://www.espn.com/",
+    "https://www.billboard.com/",
+    "https://www.reuters.com/"
   ]
 };
 

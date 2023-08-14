@@ -30,8 +30,19 @@
 						<td class="seconds-input"><input type="number" value="60" min="1" title="Duration in seconds"></td>
 					</tr>
 					<tr>
-						<td class="url-input"><input type="text" placeholder="News..." title="URL address"></td>
-						<td class="seconds-input"><input type="number" value="60" min="1" title="Duration in seconds"></td>
+						<td class="url-input">
+              <select id="subject-select">
+                <option value="nonSelectable" selected disabled>Chose a subject</option>
+                <option value="news">News</option>
+                <option value="finance">Finance</option>
+                <option value="health">Health</option>
+                <option value="sports">Sports</option>
+                <option value="music">Music</option>
+                <option value="nature">Nature</option>
+                <option value="mixed">Mixed</option>
+              </select>
+            </td>
+						<td class="seconds-input"><input type="number" value="60" min="1" title="Duration in seconds" disabled></td>
 					</tr>
 				</table>
 			</form>
