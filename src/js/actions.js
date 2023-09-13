@@ -1,7 +1,11 @@
 import { stopSwitching } from './messages.js';
 import urlSubjectLists from './subjectsList.js';
+import { clearAllInputs } from './actions.utils.js';
+import { storageLocalSet } from './storageLocal.js';
+import { CUSTOM_LIST_NAMES } from './constants.js';
 
 const urlRegex = new RegExp("^(http[s]?:\\/\\/(www\\.)?|www\\.){0,1}([0-9A-Za-z-\\.@:%_\+~#=]+)+((\\.[a-zA-Z]{2,3})+)(/(.)*)?(\\?(.)*)?");
+
 
 const closePopupWindow = () => {
   window.close();
@@ -19,17 +23,12 @@ const getUrlList = () => {
   const secondsList = document.querySelectorAll(".seconds-input input");
   for (let index = 0; index < urlList.length; index++) {
     const currentUrl = urlList[index].value;
-    console.log(currentUrl);
     const currentSeconds = parseInt(secondsList[index].value);
-    console.log(currentSeconds);
     if (urlRegex.test(currentUrl) && currentSeconds) {
-      console.log('passed the test');
       urlListItems.push({
         durationTime: currentSeconds,
         url: currentUrl
       });
-    } else {
-      console.log('failed the test');
     }
   }
   return urlListItems;
@@ -38,7 +37,7 @@ const getUrlList = () => {
 
 
 // handle the start button click
-const setStartButtonActios = (startButton) => {
+const setStartButtonActios = (startButton, subjectSelect) => {
   startButton.addEventListener('click', function () {
     // send a message to the background script to start the tab switching
     const urlListItems = getUrlList();
@@ -49,6 +48,7 @@ const setStartButtonActios = (startButton) => {
       message: "start",
       payload: {
         urlListItems,
+        customListName: CUSTOM_LIST_NAMES.find(listName => listName === subjectSelect.value),
       }
     });
     // close the popup window
@@ -57,18 +57,34 @@ const setStartButtonActios = (startButton) => {
 }
 
 const setSubjectSelectActions = (subjectSelect) => {
-  subjectSelect.addEventListener('change', function () {
+  subjectSelect.addEventListener('change', async () => {
     const subjectUrls = urlSubjectLists[subjectSelect.value];
-    const urlList = document.querySelectorAll(".url-input input");
-    urlList.forEach((urlInput, index) => {
-      urlInput.value = subjectUrls[index];
-    });
+    // matching each url string to each input element
+    let urlList = document.querySelectorAll('.url-input input');
+    switch (subjectSelect.value) {
+      case 'clearAll': {
+        clearAllInputs(urlList);
+        break;
+      }
+
+      case ['customList1', 'customList2','customList3'].find(actionName => actionName === subjectSelect.value): {
+        urlList = await storageLocalSet.get(subjectSelect.value);
+      }
+
+      default: {
+        urlList = document.querySelectorAll('.url-input input');
+        urlList.forEach((urlInput, index) => {
+          urlInput.value = subjectUrls[index];
+        });
+        break;
+      }
+    }
   });
 }
 
 const initActions = ({ stopButton, startButton, subjectSelect }) => {
   setStopButtonActios(stopButton);
-  setStartButtonActios(startButton);
+  setStartButtonActios(startButton, subjectSelect);
   setSubjectSelectActions(subjectSelect);
 };
 

@@ -27,8 +27,12 @@ function setDisabledIcon() {
   });
 };
 
-function setUrlListItemsInStorage(urlListItems) {
-  chrome.storage.local.set({ urlListItems });
+function setUrlListItemsInStorage(urlListItems, customListName) {
+  if (customListName) {
+    chrome.storage.local.set({ [customListName]: urlListItems });
+  } else {
+    chrome.storage.local.set({ urlListItems });
+  }
 };
 
 // function to switch to the next tab in the URL list
@@ -67,13 +71,13 @@ chrome.runtime.onMessage.addListener(
     // get the ID of the sender tab
     // get the list from the sender tab
     if( request.message === "start" ) {
-        const urlListItems = request.payload.urlListItems;
+        const { urlListItems, customListName } = request.payload;
         chrome.tabs.query({active: true, currentWindow: true}, tabs => {
           // stop the old one
           stop();
           start(urlListItems, tabs[0].id);
           setEnabledIcon();
-          setUrlListItemsInStorage(urlListItems)
+          setUrlListItemsInStorage(urlListItems, customListName)
         })
 
     } else if( request.message === "stop" ) {
