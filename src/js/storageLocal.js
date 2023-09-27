@@ -1,7 +1,7 @@
-const storageLocalGet = (key) => {
-  return new Promise((resolve, reject) => {
-    chrome.storage.local.get([key], res => {
-      resolve(res[key]);
+const storageLocalGet = (...keys) => {
+  return new Promise((resolve, _reject) => {
+    chrome.storage.local.get([...keys], res => {
+      resolve(res);
     });
   });
 };
