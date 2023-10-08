@@ -79,7 +79,7 @@ const setSubjectSelectActions = (subjectSelect) => {
     let subjectUrls;
     if (CUSTOM_LIST_NAMES.includes(subjectSelect.value)) {
       // if the selection is a custom selection then load the list from the local storage
-      subjectUrls = await storageLocalGet(subjectSelect.value) || [];
+      subjectUrls = (await storageLocalGet(subjectSelect.value))?.[subjectSelect.value] || [];
     } else {
       // if the selection is not a custom selection then load the list hard coded list
       subjectUrls = wrapInUrlAndDurationTimeStructure(urlSubjectLists[subjectSelect.value], DEFAULT_DURATION_TIME);
@@ -87,8 +87,8 @@ const setSubjectSelectActions = (subjectSelect) => {
     // matching each url string to each input element
     for (let index = 0; index < INPUTS_LENGTH; index++) {
       // the empty string is to support cases which the list is shorter than the number of inputs
-      URL_LIST[index].value = subjectUrls[index].url || '';
-      SECONDS_LIST[index].value = subjectUrls[index].durationTime;
+      URL_LIST[index].value = subjectUrls[index]?.url || '';
+      SECONDS_LIST[index].value = subjectUrls[index]?.durationTime || 60;
     }
   });
 }
