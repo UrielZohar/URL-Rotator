@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "URL Rotator",
   "description": "This extension automatically switches between a list of URLs at a specified time interval",
-  "version": "1.02",
+  "version": "1.03",
   "permissions": [
       "storage",
       "tabs"

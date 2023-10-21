@@ -5,6 +5,9 @@ let currentIndex = 0;
 // variable to store the intervalId for the setInterval function
 let intervalId;
 
+// variable to store the ID of the current runnig tab
+let currentRunnigTabId;
+
 function setEnabledIcon() {
   chrome.action.setIcon({
     path: {
@@ -41,7 +44,7 @@ function switchTab(urlListItems, tabSenderID) {
     // get the next URL from the list
     const currentUrl = urlListItems[currentIndex].url;
     const currentTimeDuration = urlListItems[currentIndex].durationTime;
-    isStartingWithHttpOrHttps = regexStartingWithHttpOrHttps.test(currentUrl);
+    const isStartingWithHttpOrHttps = regexStartingWithHttpOrHttps.test(currentUrl);
     // update the current tab to go to the next URL
     chrome.tabs.update(tabSenderID, {
       url: isStartingWithHttpOrHttps ? currentUrl : `http://${currentUrl}`,
@@ -55,13 +58,15 @@ function switchTab(urlListItems, tabSenderID) {
 
 // function to start the tab switching
 function start(urlListItems, tabID) {
+  // first stop the old one
+  stop();
   switchTab(urlListItems, tabID);
 }
 
 // function to stop the tab switching
 function stop() {
-    // clear the interval
-    intervalId && clearInterval(intervalId);
+  // clear the interval
+  intervalId && clearInterval(intervalId);
 }
 
 
@@ -75,7 +80,8 @@ chrome.runtime.onMessage.addListener(
         chrome.tabs.query({active: true, currentWindow: true}, tabs => {
           // stop the old one
           stop();
-          start(urlListItems, tabs[0].id);
+          currentRunnigTabId = tabs[0].id;
+          start(urlListItems, currentRunnigTabId);
           setEnabledIcon();
           setUrlListItemsInStorage(urlListItems, customListName)
         })
@@ -85,3 +91,10 @@ chrome.runtime.onMessage.addListener(
         setDisabledIcon();
     }
   });
+
+chrome.tabs.onRemoved.addListener(function(tabId, removed) {
+  if (tabId === currentRunnigTabId) {
+    stop();
+    setDisabledIcon();
+  }
+})
